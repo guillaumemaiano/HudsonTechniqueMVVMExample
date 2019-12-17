@@ -11,15 +11,22 @@ import UIKit
 class ViewController: UIViewController {
 
     @IBOutlet weak var textField: BoundTF!
-    @IBOutlet weak var user: BoundTF!
-    
+    @IBOutlet weak var userTextField: BoundTF!
+    @IBOutlet weak var standardTextField: UITextField!
+
     var quote = Quote("He who falls and gets back on his feet will fall more often than he who stays down.")
     var namedUser = User(name: Observable("Smart Guy"))
 
     override func viewDidLoad() {
         super.viewDidLoad()
         textField.bind(to: quote.quotableText)
-        user.bind(to: namedUser.name)
+        quote.quotableText.value = "updates fine"
+        
+        print("Before bind: \(namedUser.name.value ?? "username not set")")
+        userTextField.bind(to: namedUser.name)
+        print("After bind: \(namedUser.name.value ?? "username not set")")
+        standardTextField.text = "works fine"
+        
         DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
             self.quote.quotableText.value = "But he who doesn't get back on his feet will never know if he could have stood."
         }
